@@ -2493,9 +2493,9 @@ pub fn rustdesk_interval(i: Interval) -> ThrottledInterval {
 }
 
 pub fn load_custom_client() {
-    // TailTech: servidor, chave e API padrao embutidos; sem verificacao de atualizacao oficial
+    // TailTech: servidor, chave e API forcados (ignoram valores salvos); sem atualizacao oficial
     {
-        let mut d = config::DEFAULT_SETTINGS.write().unwrap();
+        let mut d = config::OVERWRITE_SETTINGS.write().unwrap();
         for (k, v) in [
             ("custom-rendezvous-server", "remoto.tailtech.com.br"),
             ("relay-server", "remoto.tailtech.com.br"),
@@ -2504,7 +2504,7 @@ pub fn load_custom_client() {
         ] {
             d.insert(k.to_owned(), v.to_owned());
         }
-        config::DEFAULT_LOCAL_SETTINGS
+        config::OVERWRITE_LOCAL_SETTINGS
             .write()
             .unwrap()
             .insert("enable-check-update".to_owned(), "N".to_owned());
