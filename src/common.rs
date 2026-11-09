@@ -2493,6 +2493,22 @@ pub fn rustdesk_interval(i: Interval) -> ThrottledInterval {
 }
 
 pub fn load_custom_client() {
+    // TailTech: servidor, chave e API padrao embutidos; sem verificacao de atualizacao oficial
+    {
+        let mut d = config::DEFAULT_SETTINGS.write().unwrap();
+        for (k, v) in [
+            ("custom-rendezvous-server", "remoto.tailtech.com.br"),
+            ("relay-server", "remoto.tailtech.com.br"),
+            ("api-server", "http://remoto.tailtech.com.br:21114"),
+            ("key", "WSPVQ1SqlqWf0ieD+KILwWlOLZOtqwvk13kuesT4Wb8="),
+        ] {
+            d.insert(k.to_owned(), v.to_owned());
+        }
+        config::DEFAULT_LOCAL_SETTINGS
+            .write()
+            .unwrap()
+            .insert("enable-check-update".to_owned(), "N".to_owned());
+    }
     #[cfg(debug_assertions)]
     if let Ok(data) = std::fs::read_to_string("./custom.txt") {
         read_custom_client(data.trim());
